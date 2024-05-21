@@ -58,7 +58,7 @@ $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
                         <?php
                         $productId = $_GET['detail'];
                         // Fetch game data from the API
-                        $response = file_get_contents($apiUrl);
+                        $response = file_get_contents($apiUrl.'/'.$productId) ;
                         $data = json_decode($response, true);
 
                         $i = 0;
