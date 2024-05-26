@@ -27,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $response = json_decode($result, true);
         if ($response && isset($response['status'])) {
-            if ($response['status'] === 'success' && isset($response['user_id'])) {
-                $_SESSION['user_id'] = $response['user_id'];
+            if ($response['status'] === 'success' && isset($response['data']['userId'])) {
+                $_SESSION['user_id'] = $response['data']['userId']; // Perubahan di sini
                 header('Location: login.php');
                 exit();
             } else {
