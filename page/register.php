@@ -26,16 +26,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Error: Unable to connect to the API.";
     } else {
         $response = json_decode($result, true);
-        if ($response && isset($response['status']) && $response['status'] === 'success' && isset($response['user_id'])) {
-            $_SESSION['user_id'] = $response['user_id'];
-            header('Location: login.php');
-            exit();
+        if ($response && isset($response['status'])) {
+            if ($response['status'] === 'success' && isset($response['user_id'])) {
+                $_SESSION['user_id'] = $response['user_id'];
+                header('Location: login.php');
+                exit();
+            } else {
+                echo "Registration failed: " . (isset($response['message']) ? $response['message'] : "Unknown error");
+            }
         } else {
-            echo "Registration failed: " . (isset($response['message']) ? $response['message'] : "Unknown error");
+            echo "Registration failed: Unknown error";
         }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html>
