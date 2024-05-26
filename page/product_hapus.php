@@ -1,4 +1,7 @@
 <?php
+// Pastikan tidak ada output sebelum header
+ob_start();
+
 $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
 
 // Check if the 'delete' parameter is set in the URL
@@ -28,6 +31,8 @@ if (isset($_GET['delete'])) {
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($httpCode == 204) {
             // Game deleted successfully
+            curl_close($ch);
+            ob_end_clean(); // Clear the output buffer
             header("Location: product.php");
             exit;
         } else {
@@ -43,5 +48,7 @@ if (isset($_GET['delete'])) {
     if (isset($errorMessage)) {
         echo $errorMessage;
     }
+} else {
+    echo "No game ID specified for deletion.";
 }
 ?>
