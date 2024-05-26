@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $genre = isset($_POST['genre']) ? $_POST['genre'] : null;
     $image = isset($_FILES['image']) ? $_FILES['image'] : null;
 
+    // Periksa apakah semua input telah diisi
     if ($id && $title && $description && $genre) {
         $url = "https://game-game-api-3o2r3t7hxa-et.a.run.app/games/$id";
         $data = [
@@ -130,6 +131,18 @@ document.querySelector('#image').addEventListener('change', function() {
     if (fileInput.files[0].size > maxFileSize) {
         alert('File size exceeds the maximum limit of 2 MB.');
         fileInput.value = '';
+    }
+});
+
+// Validasi saat mengirim formulir
+document.querySelector('form').addEventListener('submit', function(event) {
+    var title = document.getElementById('title').value.trim();
+    var description = document.getElementById('description').value.trim();
+    var genre = document.getElementById('genre').value.trim();
+
+    if (!title || !description || !genre) {
+        event.preventDefault();
+        alert('All fields are required.');
     }
 });
 </script>
