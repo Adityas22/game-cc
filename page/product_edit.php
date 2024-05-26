@@ -7,17 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image = isset($_FILES['image']) ? $_FILES['image'] : null;
 
     // Periksa apakah semua input telah diisi
-    if ($id && $title && $description && $genre) {
+    if ($id && $title && $description && $genre && $image && $image['tmp_name']) {
         $url = "https://game-game-api-3o2r3t7hxa-et.a.run.app/games/$id";
         $data = [
             'title' => $title,
             'description' => $description,
-            'genre' => $genre
+            'genre' => $genre,
+            'image' => new CURLFile($image['tmp_name'], $image['type'], $image['name'])
         ];
-
-        if ($image && $image['tmp_name']) {
-            $data['image'] = new CURLFile($image['tmp_name'], $image['type'], $image['name']);
-        }
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -35,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Update failed. Response: $response. HTTP Status Code: $http_code";
         }
     } else {
-        echo "All fields are required.";
+        echo "All fields, including the image, are required.";
     }
 } else {
     $gameId = isset($_GET['edit']) ? $_GET['edit'] : null;
@@ -110,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>
-                <input type="file" id="image" name="image" accept="image/*">
+                <input type="file" id="image" name="image" accept="image/*" required>
             </div>
             <div class="mb-3">
                 <label for="genre" class="form-label">Genre</label>
@@ -141,9 +138,9 @@ document.querySelector('form').addEventListener('submit', function(event) {
     var genre = document.getElementById('genre').value.trim();
     var image = document.getElementById('image').value.trim();
 
-    if (!title || !description || !genre) {
+    if (!title || !description || !genre || !image) {
         event.preventDefault();
-        alert('All fields are required.');
+        alert('All fields, including the image, are required.');
     }
 });
 </script>
