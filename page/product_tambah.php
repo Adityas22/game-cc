@@ -28,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($http_code == 200) {
+        // Jika respons adalah 200 atau 201, maka tambahan game berhasil
+        if ($http_code == 200 || $http_code == 201) {
             header('Location: product.php');
             exit();
         } else {
