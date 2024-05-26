@@ -29,7 +29,7 @@ if (isset($_GET['delete'])) {
     } else {
         // Check the HTTP response code
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ($httpCode == 204) {
+        if ($httpCode == 200) {
             // Game deleted successfully
             curl_close($ch);
             ob_end_clean(); // Clear the output buffer
