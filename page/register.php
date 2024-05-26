@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response = json_decode($result, true);
         if ($response && isset($response['status'])) {
             if ($response['status'] === 'success' && isset($response['data']['userId'])) {
-                $_SESSION['user_id'] = $response['data']['userId']; // Perubahan di sini
+                $_SESSION['user_id'] = $response['data']['userId'];
                 header('Location: login.php');
                 exit();
             } else {
@@ -40,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html>
