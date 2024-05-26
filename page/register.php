@@ -1,46 +1,3 @@
-<?php
-            session_start();
-
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $username = $_POST['username'];
-                $password = $_POST['password'];
-
-                $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/register';
-                $data = array(
-                    'username' => $username,
-                    'password' => $password
-                );
-
-                $options = array(
-                    'http' => array(
-                        'header'  => "Content-type: application/json\r\n",
-                        'method'  => 'POST',
-                        'content' => json_encode($data)
-                    )
-                );
-
-                $context  = stream_context_create($options);
-                $result = file_get_contents($url, false, $context);
-
-                if ($result === false) {
-                    echo "Error: Unable to connect to the API.";
-                } else {
-                    $response = json_decode($result, true);
-                    if ($response['status'] === 'success') {
-                        if (isset($response['user_id'])) {
-                            $_SESSION['user_id'] = $response['user_id'];
-                            header('Location: login.php');
-                            exit();
-                        } else {
-                            echo "Error: 'user_id' is not present in the response.";
-                        }
-                    } else {
-                        echo "Registration failed: " . $response['message'];
-                    }
-                    
-                }
-            }
-            ?>
 <!DOCTYPE html>
 <html>
 
@@ -144,6 +101,46 @@
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 <input type="submit" value="Register">
             </form>
+
+            <?php
+            session_start();
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+
+                $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/register';
+                $data = array(
+                    'username' => $username,
+                    'password' => $password
+                );
+
+                $options = array(
+                    'http' => array(
+                        'header'  => "Content-type: application/json\r\n",
+                        'method'  => 'POST',
+                        'content' => json_encode($data)
+                    )
+                );
+
+                $context  = stream_context_create($options);
+                $result = file_get_contents($url, false, $context);
+
+                if ($result === false) {
+                    echo "Error: Unable to connect to the API.";
+                } else {
+                    $response = json_decode($result, true);
+                    if ($response['status'] === 'success') {
+                        $_SESSION['user_id'] = $response['user_id'];
+                        header('Location: login.php');
+                        exit();
+                    } else {
+                        echo "Registration failed: " . $response['message'];
+                    }
+                }
+            }
+            ?>
+
             <p>Already have an account? <a href="login.php">Login here</a></p>
         </div>
     </div>
