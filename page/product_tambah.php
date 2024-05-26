@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($http_code == 200 || $http_code == 201) { // Assuming 200 or 201 means success
+        if ($http_code == 200 ) { 
             header('Location: product.php');
             exit();
         } else {
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="form-container">
         <h1 class="text-center mb-4"> Add Game</h1>
-        <form method="POST" enctype="multipart/form-data">
+        <form id="addGameForm" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="idUser" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
@@ -111,17 +111,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" class="btn btn-submit">Add</button>
         </form>
     </div>
+
+    <script>
+    document.querySelector('#image').addEventListener('change', function() {
+        var fileInput = this;
+        var maxFileSize = 2 * 1024 * 1024; // 2 MB
+
+        if (fileInput.files[0].size > maxFileSize) {
+            alert('File size exceeds the maximum limit of 2 MB.');
+            fileInput.value = '';
+        }
+    });
+
+    document.querySelector('#addGameForm').addEventListener('submit', function(event) {
+        var title = document.getElementById('title').value.trim();
+        var description = document.getElementById('description').value.trim();
+        var genre = document.getElementById('genre').value.trim();
+
+        if (!title || !description || !genre) {
+            event.preventDefault();
+            alert('All fields are required.');
+        }
+    });
+    </script>
 </body>
 
 </html>
-<script>
-document.querySelector('#image').addEventListener('change', function() {
-    var fileInput = this;
-    var maxFileSize = 2 * 1024 * 1024; // 2 MB
-
-    if (fileInput.files[0].size > maxFileSize) {
-        alert('File size exceeds the maximum limit of 2 MB.');
-        fileInput.value = '';
-    }
-});
-</script>
