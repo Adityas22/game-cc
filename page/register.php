@@ -27,12 +27,17 @@
                 } else {
                     $response = json_decode($result, true);
                     if ($response['status'] === 'success') {
-                        $_SESSION['user_id'] = $response['user_id'];
-                        header('Location: login.php');
-                        exit();
+                        if (isset($response['user_id'])) {
+                            $_SESSION['user_id'] = $response['user_id'];
+                            header('Location: login.php');
+                            exit();
+                        } else {
+                            echo "Error: 'user_id' is not present in the response.";
+                        }
                     } else {
                         echo "Registration failed: " . $response['message'];
                     }
+                    
                 }
             }
             ?>
