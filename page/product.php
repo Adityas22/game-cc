@@ -76,12 +76,16 @@ $user_id = $_SESSION['user_id'];
                             <td><?= $i ?></td>
                             <td><?= $game['title']; ?></td>
                             <td><?= $game['genre']; ?></td>
-                            <td><a href="product_edit.php?edit=<?= $game['id']; ?>"><button
-                                        class="btn btn-sm btn-outline-light" type="submit">Edit</button></a></td>
-                            <td><a href="product_hapus.php?delete=<?= $game['id']; ?>"><button
-                                        class="btn btn-sm btn-outline-danger" type="submit">Delete</button></a></td>
-                            <td><a href="product_detail.php?detail=<?= $game['id']; ?>"><button
-                                        class="btn btn-sm btn-outline-primary" type="submit">Detail</button></a></td>
+                            <td>
+                                <?php if ($game['idUser'] == $user_id) { ?>
+                                <a href="product_edit.php?edit=<?= $game['id']; ?>"><button
+                                        class="btn btn-sm btn-outline-light" type="button">Edit</button></a>
+                                <a href="product_hapus.php?delete=<?= $game['id']; ?>"><button
+                                        class="btn btn-sm btn-outline-danger" type="button">Delete</button></a>
+                                <?php } ?>
+                                <a href="product_detail.php?detail=<?= $game['id']; ?>"><button
+                                        class="btn btn-sm btn-outline-primary" type="button">Detail</button></a>
+                            </td>
                         </tr>
                         <?php
                         } ?>
