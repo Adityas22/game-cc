@@ -139,6 +139,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
     var title = document.getElementById('title').value.trim();
     var description = document.getElementById('description').value.trim();
     var genre = document.getElementById('genre').value.trim();
+    var image = document.getElementById('image').value.trim();
 
     if (!title || !description || !genre) {
         event.preventDefault();
