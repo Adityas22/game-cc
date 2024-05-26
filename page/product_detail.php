@@ -46,7 +46,6 @@ $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
                 <table class="table table-dark table-hover table-md">
                     <thead>
                         <tr>
-                            <th scope="col">No</th>
                             <th scope="col">ID</th>
                             <th scope="col">User ID</th>
                             <th scope="col">Title</th>
@@ -66,7 +65,6 @@ $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
                             $game = $data['data'];
                         ?>
                         <tr>
-                            <td>1</td>
                             <td><?= htmlspecialchars($game['id']) ?></td>
                             <td><?= htmlspecialchars($game['idUser']) ?></td>
                             <td><?= htmlspecialchars($game['title']) ?></td>
