@@ -11,20 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'password' => $password
     );
 
-    $options = array(
-        'http' => array(
-            'header'  => "Content-type: application/json\r\n",
-            'method'  => 'POST',
-            'content' => json_encode($data)
-        )
-    );
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
+    $result = curl_exec($ch);
 
     if ($result === false) {
-        $error = error_get_last();
-        echo "Error: Unable to connect to the API. Details: " . $error['message'];
+        $error = curl_error($ch);
+        echo "Error: Unable to connect to the API. Details: " . $error;
     } else {
         $response = json_decode($result, true);
         if ($response && isset($response['status'])) {
@@ -39,8 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Registration failed: Unknown error";
         }
     }
+
+    curl_close($ch);
 }
 ?>
+
 
 <!DOCTYPE html>
 <html>
