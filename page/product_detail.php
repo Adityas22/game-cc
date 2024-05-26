@@ -1,5 +1,5 @@
 <?php
-// session_start();
+
 $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
 ?>
 
@@ -40,7 +40,7 @@ $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
         <div class="row text-bg-dark text-center container-lg mt-3 p-3 my-md-4 bd-layout" style="border-radius: 5%;">
             <div class="col-sm-auto mx-auto">
                 <br>
-                <h2>Game List</h2>
+                <h2>Game Detail</h2>
                 <br>
                 <br>
                 <table class="table table-dark table-hover table-md">
@@ -58,22 +58,23 @@ $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
                         <?php
                         $productId = $_GET['detail'];
                         // Fetch game data from the API
-                        $response = file_get_contents($apiUrl.'/'.$productId) ;
+                        $response = file_get_contents($apiUrl."/".$productId);
                         $data = json_decode($response, true);
 
-                        $i = 0;
-                        foreach ($data['data'] as $game) {
-                            $i++;
-                        ?>
+                        if ($data['status'] === 'success') {
+                            $game = $data['data'];
+                            ?>
                         <tr>
-                            <td><?= $i ?></td>
+                            <td>1</td>
                             <td><?= $game['id'] ?></td>
-                            <td><?= ($game['title']) ?></td>
-                            <td><?= ($game['genre']) ?></td>
-                            <td><?= ($game['description']) ?></td>
-                            <td><img src="<?= ($game['imageUrl']) ?>" alt="<?= ($game['title']) ?>" width="100"></td>
+                            <td><?= $game['title'] ?></td>
+                            <td><?= $game['genre'] ?></td>
+                            <td><?= $game['description'] ?></td>
+                            <td><img src="<?= $game['imageUrl'] ?>" alt="<?= $game['title'] ?>" width="100"></td>
                         </tr>
                         <?php
+                        } else {
+                            echo "<tr><td colspan='6'>Game not found.</td></tr>";
                         }
                         ?>
                     </tbody>

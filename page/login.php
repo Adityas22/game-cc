@@ -121,7 +121,7 @@
             } else {
                 $response = json_decode($result, true);
                 if ($response['status'] === 'success') {
-                    $_SESSION['user_id'] = $response['user_id'];
+                    $_SESSION['user_id'] = $response['data']['userId'];
                     header('Location: product.php');
                     exit();
                 } else {

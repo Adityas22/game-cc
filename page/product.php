@@ -1,8 +1,15 @@
 <?php
 session_start();
 $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
-//ngambil id dari user
-echo $_SESSION['id']
+
+// Cek apakah sesi pengguna sudah aktif dan ID sudah diset
+if (!isset($_SESSION['user_id'])) {
+    echo "ID pengguna tidak ditemukan. Silakan login terlebih dahulu.";
+    exit();
+}
+
+// Ambil ID pengguna dari sesi
+$user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +39,6 @@ echo $_SESSION['id']
                     </li>
                 </ul>
             </div>
-            </strong>
         </div>
     </nav>
 
@@ -43,12 +49,9 @@ echo $_SESSION['id']
 
             <div class="col-sm-auto mx-auto">
                 <br>
-                <p><?php echo "ID User: " . $_SESSION['id'];?></p>
                 <h2>GAME</h2>
                 <br>
-                <!-- menambahkan product dengan membawa id dari user -->
-                <a href="product_tambah.php?idUser=<? $_SESSION['id']?>" class="btn text-bg-success">Tambah
-                    Data</a>
+                <a href="product_tambah.php?idUser=<?= $user_id ?>" class="btn text-bg-success">Tambah Data</a>
                 <br>
                 <table class="table table-dark table-hover table-md">
                     <thead>
@@ -61,11 +64,10 @@ echo $_SESSION['id']
                     </thead>
                     <tbody>
                         <?php
-                         $response = file_get_contents($apiUrl);
-                         $data = json_decode($response, true);
+                        $response = file_get_contents($apiUrl);
+                        $data = json_decode($response, true);
 
-                        $i=0;
-
+                        $i = 0;
 
                         foreach ($data['data'] as $game) {
                             $i++;
