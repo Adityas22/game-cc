@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = file_get_contents($url, false, $context);
 
     if ($result === false) {
-        echo "Error: Unable to connect to the API.";
+        $error = error_get_last();
+        echo "Error: Unable to connect to the API. Details: " . $error['message'];
     } else {
         $response = json_decode($result, true);
         if ($response && isset($response['status'])) {
