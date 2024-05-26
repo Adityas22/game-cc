@@ -48,6 +48,7 @@ $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">ID</th>
+                            <th scope="col">User ID</th>
                             <th scope="col">Title</th>
                             <th scope="col">Genre</th>
                             <th scope="col">Description</th>
@@ -58,23 +59,25 @@ $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
                         <?php
                         $productId = $_GET['detail'];
                         // Fetch game data from the API
-                        $response = file_get_contents($apiUrl."/".$productId);
+                        $response = file_get_contents($apiUrl . "/" . $productId);
                         $data = json_decode($response, true);
 
                         if ($data['status'] === 'success') {
                             $game = $data['data'];
-                            ?>
+                        ?>
                         <tr>
                             <td>1</td>
-                            <td><?= $game['id'] ?></td>
-                            <td><?= $game['title'] ?></td>
-                            <td><?= $game['genre'] ?></td>
-                            <td><?= $game['description'] ?></td>
-                            <td><img src="<?= $game['imageUrl'] ?>" alt="<?= $game['title'] ?>" width="100"></td>
+                            <td><?= htmlspecialchars($game['id']) ?></td>
+                            <td><?= htmlspecialchars($game['idUser']) ?></td>
+                            <td><?= htmlspecialchars($game['title']) ?></td>
+                            <td><?= htmlspecialchars($game['genre']) ?></td>
+                            <td><?= htmlspecialchars($game['description']) ?></td>
+                            <td><img src="<?= htmlspecialchars($game['imageUrl']) ?>"
+                                    alt="<?= htmlspecialchars($game['title']) ?>" width="100"></td>
                         </tr>
                         <?php
                         } else {
-                            echo "<tr><td colspan='6'>Game not found.</td></tr>";
+                            echo "<tr><td colspan='7'>Game not found.</td></tr>";
                         }
                         ?>
                     </tbody>
