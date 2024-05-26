@@ -32,8 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        echo "Response: $response";
-        echo "HTTP Status Code: $http_code";
+        if ($http_code == 200 || $http_code == 201) { // Assuming 200 or 201 means success
+            header('Location: product.php');
+            exit();
+        } else {
+            echo "Failed to add game. Response: $response. HTTP Status Code: $http_code";
+        }
     } else {
         echo "All fields are required.";
     }
