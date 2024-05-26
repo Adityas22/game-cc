@@ -1,3 +1,42 @@
+<?php
+        session_start();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/login';
+            $data = array(
+                'username' => $username,
+                'password' => $password
+            );
+
+            $options = array(
+                'http' => array(
+                    'header'  => "Content-type: application/json\r\n",
+                    'method'  => 'POST',
+                    'content' => json_encode($data)
+                )
+            );
+
+            $context  = stream_context_create($options);
+            $result = file_get_contents($url, false, $context);
+
+            if ($result === false) {
+                echo "Error: Unable to connect to the API.";
+            } else {
+                $response = json_decode($result, true);
+                if ($response['status'] === 'success') {
+                    $_SESSION['user_id'] = $response['data']['userId'];
+                    header('Location: product.php');
+                    exit();
+                } else {
+                    echo "Login failed: " . $response['message'] . "<br>";
+                    echo "Don't have an account? <a href='register.php'>Register here</a>";
+                }
+            }
+        }
+        ?>
 <!DOCTYPE html>
 <html>
 
@@ -91,45 +130,6 @@
 
             <input type="submit" value="Login">
         </form>
-
-        <?php
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-
-            $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/login';
-            $data = array(
-                'username' => $username,
-                'password' => $password
-            );
-
-            $options = array(
-                'http' => array(
-                    'header'  => "Content-type: application/json\r\n",
-                    'method'  => 'POST',
-                    'content' => json_encode($data)
-                )
-            );
-
-            $context  = stream_context_create($options);
-            $result = file_get_contents($url, false, $context);
-
-            if ($result === false) {
-                echo "Error: Unable to connect to the API.";
-            } else {
-                $response = json_decode($result, true);
-                if ($response['status'] === 'success') {
-                    $_SESSION['user_id'] = $response['data']['userId'];
-                    header('Location: product.php');
-                    exit();
-                } else {
-                    echo "Login failed: " . $response['message'] . "<br>";
-                    echo "Don't have an account? <a href='register.php'>Register here</a>";
-                }
-            }
-        }
-        ?>
         <p>Don't have an account? <a href="register.php">Register here</a></p>
     </div>
 </body>
