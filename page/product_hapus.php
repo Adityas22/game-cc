@@ -1,5 +1,4 @@
 <?php
-// session_start();
 $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
 
 // Check if the 'delete' parameter is set in the URL
@@ -23,24 +22,26 @@ if (isset($_GET['delete'])) {
     // Check for any cURL errors
     if (curl_errno($ch)) {
         $error = curl_error($ch);
-        echo "Error deleting the game: " . $error;
+        $errorMessage = "Error deleting the game: " . $error;
     } else {
         // Check the HTTP response code
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($httpCode == 204) {
             // Game deleted successfully
-            echo "Game deleted successfully.";
+            header("Location: product.php");
+            exit;
         } else {
             // Error deleting the game
-            echo "Error deleting the game. HTTP status code: " . $httpCode;
+            $errorMessage = "Error deleting the game. HTTP status code: " . $httpCode;
         }
     }
 
     // Close the cURL session
     curl_close($ch);
 
-    // Redirect back to the main page
-    header("Location: product.php");
-    exit;
+    // If there was an error, show the error message
+    if (isset($errorMessage)) {
+        echo $errorMessage;
+    }
 }
 ?>
