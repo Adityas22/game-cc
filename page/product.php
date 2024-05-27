@@ -35,7 +35,7 @@ $user_id = $_SESSION['user_id'];
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="logout.php">Logout</a>
+                        <a id="logout-link" class="nav-link" aria-current="page" href="#">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -95,6 +95,15 @@ $user_id = $_SESSION['user_id'];
         </div>
 
     </center>
+
+    <script>
+    document.getElementById('logout-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (confirm('Apakah yakin ingin keluar?')) {
+            window.location.href = 'logout.php';
+        }
+    });
+    </script>
 
 </body>
 
