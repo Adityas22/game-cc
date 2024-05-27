@@ -2,40 +2,43 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
     if (empty($username) || empty($password)) {
-        $error = "Username and password cannot be empty.";
+        echo "<script>alert('Both username and password are required.'); window.location.href = 'login.php';</script>";
+        exit();
+    }
+
+    $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/login';
+    $data = array(
+        'username' => $username,
+        'password' => $password
+    );
+
+    $options = array(
+        'http' => array(
+            'header'  => "Content-type: application/json\r\n",
+            'method'  => 'POST',
+            'content' => json_encode($data)
+        )
+    );
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+
+    if ($result === false) {
+        echo "<script>alert('Error: Unable to connect to the API.'); window.location.href = 'login.php';</script>";
     } else {
-        $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/login';
-        $data = array(
-            'username' => $username,
-            'password' => $password
-        );
-
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/json\r\n",
-                'method'  => 'POST',
-                'content' => json_encode($data)
-            )
-        );
-
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-
-        if ($result === false) {
-            $error = "Error: Unable to connect to the API.";
+        $response = json_decode($result, true);
+        if ($response['status'] === 'success') {
+            $_SESSION['user_id'] = $response['data']['userId'];
+            header('Location: product.php');
+            exit();
         } else {
-            $response = json_decode($result, true);
-            if ($response['status'] === 'success') {
-                $_SESSION['user_id'] = $response['data']['userId'];
-                header('Location: product.php');
-                exit();
-            } else {
-                $error = "Login failed: " . $response['message'];
-            }
+            $status = $response['status'];
+            $errorMessage = $response['error']['message'];
+            echo "<script>alert('Login failed: $status - $errorMessage'); window.location.href = 'login.php';</script>";
         }
     }
 }
@@ -113,17 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         margin-top: 20px;
     }
     </style>
-    <script>
-    function validateForm() {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-        if (username === "" || password === "") {
-            alert("Username and password cannot be empty.");
-            return false;
-        }
-        return true;
-    }
-    </script>
 </head>
 
 <body>
@@ -135,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="login-container">
         <h1>Login</h1>
-        <form method="POST" action="" onsubmit="return validateForm()">
+        <form method="POST" action="">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required><br>
 
@@ -146,11 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
         <p>Don't have an account? <a href="register.php">Register here</a></p>
     </div>
-    <?php
-    if (!empty($error)) {
-        echo "<script>alert('$error');</script>";
-    }
-    ?>
 </body>
 
 </html>
