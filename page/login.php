@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = file_get_contents($url, false, $context);
 
     if ($result === false) {
-        echo "<script>alert('Error: Unable to connect to the API.'); window.location.href = 'login.php';</script>";
+        echo "<script>alert('Error: Failed!'); window.location.href = 'login.php';</script>";
     } else {
         $response = json_decode($result, true);
         if ($response['status'] === 'success') {
