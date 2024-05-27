@@ -5,42 +5,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/register';
-    $data = array(
-        'username' => $username,
-        'password' => $password
-    );
-
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-    $result = curl_exec($ch);
-
-    if ($result === false) {
-        $error = curl_error($ch);
-        echo "Error: Unable to connect to the API. Details: " . $error;
+    if (empty($username) || empty($password)) {
+        $error = "Username and password cannot be empty.";
     } else {
-        $response = json_decode($result, true);
-        if ($response && isset($response['status'])) {
-            if ($response['status'] === 'success' && isset($response['data']['userId'])) {
-                $_SESSION['user_id'] = $response['data']['userId'];
-                header('Location: login.php');
-                exit();
-            } else {
-                echo "Registration failed: " . (isset($response['message']) ? $response['message'] : "Unknown error");
-            }
-        } else {
-            echo "Registration failed: Unknown error";
-        }
-    }
+        $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/register';
+        $data = array(
+            'username' => $username,
+            'password' => $password
+        );
 
-    curl_close($ch);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+        $result = curl_exec($ch);
+
+        if ($result === false) {
+            $error = "Error: Unable to connect to the API. Details: " . curl_error($ch);
+        } else {
+            $response = json_decode($result, true);
+            if ($response && isset($response['status'])) {
+                if ($response['status'] === 'success' && isset($response['data']['userId'])) {
+                    $_SESSION['user_id'] = $response['data']['userId'];
+                    header('Location: login.php');
+                    exit();
+                } else {
+                    $error = "Registration failed: " . (isset($response['message']) ? $response['message'] : "Unknown error");
+                }
+            } else {
+                $error = "Registration failed: Unknown error";
+            }
+        }
+
+        curl_close($ch);
+    }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -128,6 +130,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         text-decoration: none;
     }
     </style>
+    <script>
+    function validateForm() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        if (username === "" || password === "") {
+            alert("Username and password cannot be empty.");
+            return false;
+        }
+        return true;
+    }
+    </script>
 </head>
 
 <body>
@@ -140,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="form-container">
             <h1>Register</h1>
-            <form method="POST" action="">
+            <form method="POST" action="" onsubmit="return validateForm()">
                 <input type="text" id="username" name="username" placeholder="Username" required>
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 <input type="submit" value="Register">
@@ -148,6 +161,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Already have an account? <a href="login.php">Login here</a></p>
         </div>
     </div>
+    <?php
+    if (!empty($error)) {
+        echo "<script>alert('$error');</script>";
+    }
+    ?>
 </body>
 
 </html>
