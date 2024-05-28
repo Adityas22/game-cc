@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header('Location: login.php');
                     exit();
                 } else {
-                    $error = "Registration failed: " . (isset($response['message']) ? $response['message'] : "Unknown error");
+                    $error = "Registration failed: " . $response['error']['message'];
                 }
             } else {
                 $error = "Registration failed: Unknown error";
