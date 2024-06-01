@@ -1,6 +1,6 @@
 <?php
 session_start();
-$apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
+$apiUrl = 'https://game-api-game-f5h63tksnq-et.a.run.app/games';
 
 // Cek apakah sesi pengguna sudah aktif dan ID sudah diset
 if (!isset($_SESSION['user_id'])) {

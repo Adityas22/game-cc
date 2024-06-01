@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/login';
+    $url = 'https://game-api-auth-f5h63tksnq-et.a.run.app/login';
     $data = array(
         'username' => $username,
         'password' => $password

@@ -1,6 +1,6 @@
 <?php
 
-$apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
+$apiUrl = 'https://game-api-game-f5h63tksnq-et.a.run.app/games';
 ?>
 
 <!DOCTYPE html>

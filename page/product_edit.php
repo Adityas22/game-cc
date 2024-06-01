@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Periksa apakah semua input telah diisi
     if ($id && $title && $description && $genre && $image && $image['tmp_name']) {
-        $url = "https://game-game-api-3o2r3t7hxa-et.a.run.app/games/$id";
+        $url = "https://game-api-game-f5h63tksnq-et.a.run.app/games/$id";
         $data = [
             'title' => $title,
             'description' => $description,
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $gameId = isset($_GET['edit']) ? $_GET['edit'] : null;
 
     if ($gameId) {
-        $apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games/' . $gameId;
+        $apiUrl = 'https://game-api-game-f5h63tksnq-et.a.run.app/games/' . $gameId;
         $response = file_get_contents($apiUrl);
         $gameData = json_decode($response, true);
     } else {

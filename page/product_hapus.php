@@ -2,7 +2,7 @@
 // Pastikan tidak ada output sebelum header
 ob_start();
 
-$apiUrl = 'https://game-game-api-3o2r3t7hxa-et.a.run.app/games';
+$apiUrl = 'https://game-api-game-f5h63tksnq-et.a.run.app/games';
 
 // Check if the 'delete' parameter is set in the URL
 if (isset($_GET['delete'])) {

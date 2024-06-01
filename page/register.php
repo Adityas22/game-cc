@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($password)) {
         $error = "Username and password cannot be empty.";
     } else {
-        $url = 'https://game-auth-api-3o2r3t7hxa-et.a.run.app/register';
+        $url = 'https://game-api-auth-f5h63tksnq-et.a.run.app/register';
         $data = array(
             'username' => $username,
             'password' => $password

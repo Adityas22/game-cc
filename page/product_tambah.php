@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Periksa apakah semua input telah diisi
     if ($idUser && $title && $description && $genre && $image['tmp_name']) {
-        $url = "https://game-game-api-3o2r3t7hxa-et.a.run.app/games";
+        $url = "https://game-api-game-f5h63tksnq-et.a.run.app/games";
         $data = [
             'idUser' => $idUser,
             'title' => $title,
